@@ -18,25 +18,25 @@ resource todoApp 'Applications.Core/applications@2023-10-01-preview' = {
   }
 }
 
-resource database 'Radius.Data/mySqlDatabases@2025-08-01-preview' = {
+resource mysqlDb 'Radius.Data/mySqlDatabases@2025-08-01-preview' = {
   name: 'mysql'
   properties: {
     environment: environment
     application: todoApp.id
     database: 'todos'
     version: '8.0'
-    secretName: dbSecret.name
+    secretName: mysqlSecret.name
   }
 }
 
-resource dbSecret 'Radius.Security/secrets@2025-08-01-preview' = {
-  name: 'dbsecret'
+resource mysqlSecret 'Radius.Security/secrets@2025-08-01-preview' = {
+  name: 'mysql-secret'
   properties: {
     environment: environment
     application: todoApp.id
     data: {
       USERNAME: {
-        value: 'root'
+        value: 'todo_user'
       }
       PASSWORD: {
         value: password
@@ -58,7 +58,7 @@ resource todoImage 'Radius.Compute/containerImages@2025-08-01-preview' = {
 }
 
 resource todoContainer 'Radius.Compute/containers@2025-08-01-preview' = {
-  name: 'todo-list-frontend'
+  name: 'todo-list-app'
   properties: {
     environment: environment
     application: todoApp.id
@@ -74,7 +74,7 @@ resource todoContainer 'Radius.Compute/containers@2025-08-01-preview' = {
     }
     connections: {
       mysqldb: {
-        source: database.id
+        source: mysqlDb.id
       }
       containerImage: {
         source: todoImage.id
