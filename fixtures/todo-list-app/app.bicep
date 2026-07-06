@@ -36,7 +36,7 @@ resource dbSecret 'Radius.Security/secrets@2025-08-01-preview' = {
     application: todoApp.id
     data: {
       USERNAME: {
-        value: 'todo_list_app_user'
+        value: 'root'
       }
       PASSWORD: {
         value: password
@@ -45,14 +45,14 @@ resource dbSecret 'Radius.Security/secrets@2025-08-01-preview' = {
   }
 }
 
-resource demoImage 'Radius.Compute/containerImages@2025-08-01-preview' = {
-  name: 'demo-image'
+resource todoImage 'Radius.Compute/containerImages@2025-08-01-preview' = {
+  name: 'todo-list-app-image'
   properties: {
     environment: environment
     application: todoApp.id
     image: image
     build: {
-      context: '/app/demo'
+      context: '.'
     }
   }
 }
@@ -64,7 +64,7 @@ resource todoContainer 'Radius.Compute/containers@2025-08-01-preview' = {
     application: todoApp.id
     containers: {
       todo: {
-        image: demoImage.properties.image
+        image: todoImage.properties.image
         ports: {
           web: {
             containerPort: 3000
@@ -76,8 +76,8 @@ resource todoContainer 'Radius.Compute/containers@2025-08-01-preview' = {
       mysqldb: {
         source: database.id
       }
-      demoContainerImage: {
-        source: demoImage.id
+      containerImage: {
+        source: todoImage.id
       }
     }
   }
