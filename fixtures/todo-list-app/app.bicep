@@ -36,7 +36,7 @@ resource mysqlSecret 'Radius.Security/secrets@2025-08-01-preview' = {
     application: todoApp.id
     data: {
       USERNAME: {
-        value: 'root'
+        value: 'todo_user'
       }
       PASSWORD: {
         value: password
