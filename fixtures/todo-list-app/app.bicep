@@ -1,15 +1,11 @@
 extension radius
 extension radiusCompute
-extension radiusSecurity
 extension radiusData
 
 param environment string
 
 @secure()
 param password string
-
-@description('The full container image reference to build and push. Must be lowercase.')
-param image string
 
 resource todoApp 'Applications.Core/applications@2023-10-01-preview' = {
   name: 'todo-list-app'
@@ -25,23 +21,8 @@ resource mysqlDb 'Radius.Data/mySqlDatabases@2025-08-01-preview' = {
     application: todoApp.id
     database: 'todos'
     version: '8.0'
-    secretName: mysqlSecret.name
-  }
-}
-
-resource mysqlSecret 'Radius.Security/secrets@2025-08-01-preview' = {
-  name: 'mysql-secret'
-  properties: {
-    environment: environment
-    application: todoApp.id
-    data: {
-      USERNAME: {
-        value: 'todo_user'
-      }
-      PASSWORD: {
-        value: password
-      }
-    }
+    username: 'todo_user'
+    password: password
   }
 }
 
@@ -50,9 +31,8 @@ resource todoImage 'Radius.Compute/containerImages@2025-08-01-preview' = {
   properties: {
     environment: environment
     application: todoApp.id
-    image: image
     build: {
-      context: '.'
+      source: '.'
     }
   }
 }
@@ -64,7 +44,7 @@ resource todoContainer 'Radius.Compute/containers@2025-08-01-preview' = {
     application: todoApp.id
     containers: {
       todo: {
-        image: todoImage.properties.image
+        image: todoImage.properties.imageReference
         ports: {
           web: {
             containerPort: 3000
