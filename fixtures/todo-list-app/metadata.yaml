@@ -4,7 +4,7 @@ source_commit: 09b079d
 
 # Which skill version produced the output
 skill_repo: kachawla/skills
-skill_commit: e636e36
+skill_commit: 593961f
 
 # When it was generated
-generated_at: 2026-07-07T13:20:00-07:00
+generated_at: 2026-07-08T10:09:00-07:00
