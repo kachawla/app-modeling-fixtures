@@ -5,9 +5,6 @@ param environment string
 @secure()
 param password string
 
-@description('The full container image reference to build and push. Must be lowercase.')
-param image string
-
 resource todoApp 'Radius.Core/applications@2025-08-01-preview' = {
   name: 'todo-list-app'
   properties: {
@@ -32,9 +29,8 @@ resource todoImage 'Radius.Compute/containerImages@2025-08-01-preview' = {
   properties: {
     environment: environment
     application: todoApp.id
-    image: image
     build: {
-      context: '.'
+      source: 'git::https://github.com/kachawla/todo-list-app.git?ref=09b079d'
     }
   }
 }
@@ -46,7 +42,7 @@ resource todoContainer 'Radius.Compute/containers@2025-08-01-preview' = {
     application: todoApp.id
     containers: {
       todo: {
-        image: todoImage.properties.image
+        image: todoImage.properties.imageReference
         ports: {
           web: {
             containerPort: 3000
@@ -57,9 +53,6 @@ resource todoContainer 'Radius.Compute/containers@2025-08-01-preview' = {
     connections: {
       mysqldb: {
         source: mysqlDb.id
-      }
-      containerImage: {
-        source: todoImage.id
       }
     }
   }
