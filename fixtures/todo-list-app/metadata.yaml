@@ -1,10 +1,5 @@
 source_repo: kachawla/todo-list-app
 source_commit: 09b079d4686cd7fc3db9360335d10a96cf6dbdbf
 skill_repo: kachawla/skills
-skill_commit: 333be4e
-skill_path: skills/app-modeling
-generated_at: "2026-07-08T17:15:00Z"
-notes: >
-  containerImages now uses build.source with git URL format.
-  Removed param image string. Container references imageReference
-  instead of image. Removed containerImage connection from container.
+skill_commit: e4f419ae1ec61a39b57913e0dee91beef95d1744
+generated_at: "2026-07-13T23:59:00Z"
