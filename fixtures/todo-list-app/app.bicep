@@ -24,6 +24,19 @@ resource mysqlDb 'Radius.Data/mySqlDatabases@2025-08-01-preview' = {
   }
 }
 
+resource mysqlRuntimeSecret 'Radius.Security/secrets@2025-08-01-preview' = {
+  name: 'mysql-runtime-secret'
+  properties: {
+    environment: environment
+    application: todoApp.id
+    data: {
+      password: {
+        value: password
+      }
+    }
+  }
+}
+
 resource todoImage 'Radius.Compute/containerImages@2025-08-01-preview' = {
   name: 'todo-list-app-image'
   properties: {
@@ -48,11 +61,25 @@ resource todoContainer 'Radius.Compute/containers@2025-08-01-preview' = {
             containerPort: 3000
           }
         }
-      }
-    }
-    connections: {
-      mysqldb: {
-        source: mysqlDb.id
+        env: {
+          MYSQL_HOST: {
+            value: mysqlDb.properties.host
+          }
+          MYSQL_USER: {
+            value: 'myadmin'
+          }
+          MYSQL_PASSWORD: {
+            valueFrom: {
+              secretKeyRef: {
+                secretName: mysqlRuntimeSecret.name
+                key: 'password'
+              }
+            }
+          }
+          MYSQL_DB: {
+            value: 'todos'
+          }
+        }
       }
     }
   }
