@@ -1,4 +1,5 @@
 extension radius
+extension customTypes
 
 param environment string
 
@@ -21,6 +22,15 @@ resource mysqlDb 'Radius.Data/mySqlDatabases@2025-08-01-preview' = {
     version: '8.0'
     username: 'myadmin'
     password: password
+  }
+}
+
+resource serviceBus 'Radius.Resources/azureServiceBusNamespaces@2025-08-01-preview' = {
+  name: 'servicebus'
+  properties: {
+    environment: environment
+    application: todoApp.id
+    queueName: 'todo-notifications'
   }
 }
 
@@ -62,6 +72,17 @@ resource todoContainer 'Radius.Compute/containers@2025-08-01-preview' = {
           }
           MYSQL_DB: {
             value: 'todos'
+          }
+          SERVICEBUS_CONNECTION_STRING: {
+            valueFrom: {
+              secretKeyRef: {
+                secretName: serviceBus.properties.secrets.name
+                key: 'connectionString'
+              }
+            }
+          }
+          SERVICEBUS_QUEUE_NAME: {
+            value: 'todo-notifications'
           }
         }
       }

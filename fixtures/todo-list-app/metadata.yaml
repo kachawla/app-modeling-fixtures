@@ -1,5 +1,6 @@
 source_repo: kachawla/todo-list-app
-source_commit: 09b079d4686cd7fc3db9360335d10a96cf6dbdbf
+source_commit: 2129181
+source_branch: kachawla-app-modeling-definition
 skill_repo: kachawla/skills
 skill_branch: generate-custom-types
 skill_commit: fd4be4c
