@@ -9,6 +9,10 @@ resource pack 'Radius.Core/recipePacks@2025-08-01-preview' = {
         source: 'mcr.microsoft.com/bicep/avm/res/service-bus/namespace:0.12.0'
         parameters: {
           name: '{{context.resource.name}}'
+          disableLocalAuth: false
+          skuObject: {
+            name: 'Standard'
+          }
           queues: [
             {
               name: '{{context.resource.properties.queueName}}'
@@ -17,7 +21,7 @@ resource pack 'Radius.Core/recipePacks@2025-08-01-preview' = {
         }
         outputs: {
           secrets: {
-            connectionString: 'serviceBusConnectionString'
+            connectionString: 'primaryConnectionString'
           }
         }
       }
