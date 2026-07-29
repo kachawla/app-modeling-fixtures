@@ -29,8 +29,10 @@ resource todoImage 'Radius.Compute/containerImages@2025-08-01-preview' = {
   properties: {
     environment: environment
     application: todoApp.id
+    tag: '09b079d'
     build: {
       source: 'git::https://github.com/kachawla/todo-list-app.git?ref=09b079d'
+      platforms: ['linux/amd64']
     }
   }
 }
