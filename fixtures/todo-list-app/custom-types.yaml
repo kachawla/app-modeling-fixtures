@@ -1,0 +1,42 @@
+namespace: Radius.Resources
+types:
+  azureServiceBusNamespaces:
+    description: |
+      An Azure Service Bus namespace with a queue.
+      Usage in app.bicep:
+        resource serviceBus 'Radius.Resources/azureServiceBusNamespaces@2025-08-01-preview' = {
+          name: 'servicebus'
+          properties: {
+            environment: environment
+            application: app.id
+            queueName: 'todo-notifications'
+          }
+        }
+    apiVersions:
+      '2025-08-01-preview':
+        schema:
+          type: object
+          properties:
+            environment:
+              type: string
+              description: "(Required) The Radius Environment ID. Typically set by the rad CLI."
+            application:
+              type: string
+              description: "(Optional) The Radius Application ID."
+            queueName:
+              type: string
+              description: "(Required) The name of the Service Bus queue to create."
+            secrets:
+              type: object
+              readOnly: true
+              description: "Managed secret metadata populated by the recipe."
+              properties:
+                name:
+                  type: string
+                  readOnly: true
+                  description: "Name of the managed Radius.Security/secrets resource."
+                connectionString:
+                  type: string
+                  readOnly: true
+                  description: "Key in the managed secret holding the namespace connection string."
+          required: [environment, queueName]
