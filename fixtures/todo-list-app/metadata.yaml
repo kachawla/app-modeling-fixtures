@@ -3,5 +3,5 @@ source_commit: 8e4efd6
 source_branch: kachawla-app-modeling-definition
 skill_repo: kachawla/skills
 skill_branch: generate-custom-types
-skill_commit: e135009
-generated_at: "2026-07-29T05:36:00Z"
+skill_commit: 082f0d7
+generated_at: "2026-07-29T05:41:00Z"
